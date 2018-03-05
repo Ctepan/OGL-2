@@ -312,7 +312,6 @@ void gravitationShowInit(int numOfParts, GLuint &vaoHandle, GLuint &numElements)
 	}
 	GLuint bufSize = numOfParts * 4 * sizeof(GLfloat);
 	GLuint posBuf;
-	////
 	glGenBuffers(1, &posBuf);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, posBuf);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, bufSize, &initPos[0], GL_DYNAMIC_DRAW);

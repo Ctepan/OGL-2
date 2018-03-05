@@ -126,9 +126,6 @@
     <Text Include="fshader1.frag" />
     <Text Include="vshader1.vert" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="glslprogram.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

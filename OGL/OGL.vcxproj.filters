@@ -24,9 +24,4 @@
     <Text Include="fshader1.frag" />
     <Text Include="cshader.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="glslprogram.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-  </ItemGroup>
 </Project>

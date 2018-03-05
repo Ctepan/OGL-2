@@ -1,0 +1,47 @@
+#version 430 core
+
+layout( local_size_x = 1000 ) in;
+
+uniform float Gravity1 = 00000.0;
+uniform vec3 BlackHolePos1;
+uniform float Gravity2 = 10000.0;
+uniform vec3 BlackHolePos2;
+uniform float ParticleInvMass = 1.0 / 0.1;
+uniform float DeltaT = 0.0005;
+
+layout(std430, binding=0) buffer Pos {
+ vec4 Position[];
+};
+layout(std430, binding=2) buffer Vel {
+ vec4 Velocity[];
+};
+
+vec3 f(vec3 x, vec3 y)
+{
+	 return y + x * DeltaT;
+}
+
+void main() 
+{
+	uint idx = gl_GlobalInvocationID.x;
+	vec3 p = Position[idx].xyz;
+	vec3 v = Velocity[idx].xyz;
+
+	//расчет сил гравитации
+	vec3 d = BlackHolePos1 - p;
+	vec3 force = (Gravity1 / (length(d) * length(d))) * normalize(d);
+
+	d = BlackHolePos2 - p;
+	force += (Gravity2 / length(d)) * normalize(d);
+
+	//метод Рунге-Кутты
+	vec3 a = force * ParticleInvMass;
+	vec3 k1, k2, k3, k4;
+	k1 = f(a, v);
+	k2 = f(a + vec3(DeltaT/2), v + vec3(DeltaT/2 * k1));
+	k3 = f(a + vec3(DeltaT/2), v + vec3(DeltaT/2 * k2));
+	k4 = f(a + vec3(DeltaT), v + vec3(DeltaT * k3));
+
+	Position[idx] = vec4(p + DeltaT/6.0 *(k1 + 2*k2 + 2*k3 + k4), 1.0);
+	Velocity[idx] = vec4( v + a * DeltaT, 0.0);
+}
